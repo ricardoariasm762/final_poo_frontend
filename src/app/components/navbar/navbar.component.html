@@ -1,0 +1,45 @@
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low/75 backdrop-blur-xl border-r border-outline-variant/70 shadow-[0_20px_60px_rgba(0,0,0,0.45)] z-50 flex flex-col p-sm space-y-base hidden md:flex">
+  <div class="flex items-center gap-md px-base py-md">
+    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-secondary-container to-primary/30 flex items-center justify-center border border-white/10">
+      <span class="material-symbols-outlined text-on-secondary-container" data-icon="trophy">trophy</span>
+    </div>
+    <div class="min-w-0">
+      <h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Arena Master</h1>
+      <p class="text-label-md font-label-md text-on-surface-variant truncate">{{ auth.isAdmin() ? 'Pro League Admin' : 'Espectador' }}</p>
+    </div>
+  </div>
+
+  <nav class="flex-1 space-y-xs overflow-y-auto">
+    @if (menuLoading) {
+      <div class="p-sm text-on-surface-variant">Cargando…</div>
+    } @else if (menuError) {
+      <button (click)="cargarMenu()" class="w-full p-sm text-on-surface-variant hover:text-on-surface hover:bg-white/[0.05] rounded-xl transition-all text-left">
+        {{ menuError }} (reintentar)
+      </button>
+    } @else {
+      <app-menu-tree [items]="menu" />
+    }
+  </nav>
+
+  <div class="pt-4 border-t border-outline-variant/70 space-y-2">
+    @if (auth.isLoggedIn()) {
+      <div class="px-sm py-2">
+        <div class="flex items-center gap-sm mb-3">
+          <span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+          <span class="text-sm font-medium text-on-surface truncate">{{ auth.getUsername() }}</span>
+        </div>
+        <button (click)="logout()" class="w-full bg-gradient-to-r from-error-container to-error-container/70 text-on-error-container py-2 px-4 rounded-xl font-bold flex items-center justify-center gap-sm hover:brightness-110 transition-all border border-white/10">
+          <span class="material-symbols-outlined" data-icon="logout">logout</span>
+          <span class="font-label-lg text-label-lg">Cerrar Sesión</span>
+        </button>
+      </div>
+    } @else {
+      <div class="px-sm py-2">
+        <a routerLink="/login" class="w-full bg-primary text-on-primary py-2 px-4 rounded-xl font-bold flex items-center justify-center gap-sm hover:brightness-110 transition-all border border-white/10">
+          <span class="material-symbols-outlined" data-icon="login">login</span>
+          <span class="font-label-lg text-label-lg">Iniciar Sesión</span>
+        </a>
+      </div>
+    }
+  </div>
+</aside>

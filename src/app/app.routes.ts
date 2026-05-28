@@ -1,42 +1,64 @@
 import { Routes } from '@angular/router';
-
-import { ClientsComponent } from './clients/clients.component';
-import { LoginComponent } from './login/login.component';
-import { CreateClientComponent } from './create-client/create-client.component';
-import { EditClientComponent } from './edit-client/edit-client.component';
-import { MainLayoutComponent } from './main-layout/main-layout.component';
-import { FeaturePlaceholderComponent } from './feature-placeholder/feature-placeholder.component';
-import { ProductsComponent } from './products/products.component';
-import { CreateProductComponent } from './create-product/create-product.component';
-import { EditProductComponent } from './edit-product/edit-product.component';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
   {
     path: '',
-    component: MainLayoutComponent,
-    children: [
-      { path: '', pathMatch: 'full', redirectTo: 'clientes' },
-      { path: 'clientes', component: ClientsComponent },
-      { path: 'clientes/nuevo', component: CreateClientComponent },
-      { path: 'clientes/editar', redirectTo: 'clientes' },
-      { path: 'clientes/eliminar', redirectTo: 'clientes' },
-      { path: 'clientes/editar/:id', component: EditClientComponent },
-      { path: 'productos', component: ProductsComponent },
-      { path: 'productos/nuevo', component: CreateProductComponent },
-      { path: 'productos/editar', redirectTo: 'productos' },
-      { path: 'productos/eliminar', redirectTo: 'productos' },
-      { path: 'productos/editar/:id', component: EditProductComponent },
-      {
-        path: 'productos/categorias',
-        component: FeaturePlaceholderComponent,
-        data: {
-          title: 'Categorias de productos',
-          description: 'Este nivel del menu ya navega correctamente y puede conectarse a un modulo futuro de categorias.',
-          backRoute: '/productos'
-        }
-      }
-    ]
+    redirectTo: 'torneos',
+    pathMatch: 'full'
   },
-  { path: '**', redirectTo: '' }
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./components/auth/login/login.component')
+        .then(m => m.LoginComponent)
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./components/auth/register/register.component')
+        .then(m => m.RegisterComponent)
+  },
+  {
+    path: 'dashboard',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['ROLE_ADMIN'] },
+    loadComponent: () =>
+      import('./components/dashboard/dashboard.component')
+        .then(m => m.DashboardComponent)
+  },
+  {
+    path: 'torneos',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./components/torneos/torneos.component')
+        .then(m => m.TorneosComponent)
+  },
+  {
+    path: 'participantes',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['ROLE_ADMIN'] },
+    loadComponent: () =>
+      import('./components/participantes/participantes.component')
+        .then(m => m.ParticipantesComponent)
+  },
+  {
+    path: 'torneos/:id/encuentros',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./components/encuentros/encuentros.component')
+        .then(m => m.EncuentrosComponent)
+  },
+  {
+    path: 'torneos/:id/tabla',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./components/tabla/tabla.component')
+        .then(m => m.TablaComponent)
+  },
+  {
+    path: '**',
+    redirectTo: 'torneos'
+  }
 ];

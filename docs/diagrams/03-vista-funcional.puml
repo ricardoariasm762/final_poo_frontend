@@ -1,0 +1,49 @@
+@startuml
+title Arena Master — Vista Funcional (Casos de Uso por Rol)
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+actor "Administrador\n(ROLE_ADMIN)" as Admin
+actor "Espectador\n(ROLE_USER)" as Viewer
+
+rectangle "Arena Master" {
+  usecase "Autenticarse\n(Login)" as UC_Login
+  usecase "Registrarse\n(Register)" as UC_Register
+  usecase "Ver Torneos\n(Listar)" as UC_List
+  usecase "Ver Encuentros\n(Programados/Finalizados)" as UC_Matches
+  usecase "Ver Tabla\n(Posiciones)" as UC_Table
+
+  usecase "Crear Torneo" as UC_CreateTournament
+  usecase "Editar Torneo" as UC_EditTournament
+  usecase "Eliminar Torneo" as UC_DeleteTournament
+  usecase "Iniciar Fase de Grupos\n(genera encuentros)" as UC_StartGroups
+  usecase "Reiniciar a Inscripciones" as UC_Reset
+  usecase "Registrar Participantes\n(Fútbol/Basket/Tenis)" as UC_Participants
+  usecase "Registrar Resultado\n(de un encuentro)" as UC_Result
+  usecase "Iniciar Eliminación\n(si fase grupos completa)" as UC_StartKO
+}
+
+Admin --> UC_Login
+Admin --> UC_List
+Admin --> UC_CreateTournament
+Admin --> UC_EditTournament
+Admin --> UC_DeleteTournament
+Admin --> UC_StartGroups
+Admin --> UC_Reset
+Admin --> UC_Participants
+Admin --> UC_Matches
+Admin --> UC_Result
+Admin --> UC_Table
+Admin --> UC_StartKO
+
+Viewer --> UC_Register
+Viewer --> UC_Login
+Viewer --> UC_List
+Viewer --> UC_Matches
+Viewer --> UC_Table
+
+UC_StartGroups .> UC_Matches : <<include>>
+UC_Result .> UC_Table : <<include>>
+UC_StartKO .> UC_Table : <<include>>
+@enduml

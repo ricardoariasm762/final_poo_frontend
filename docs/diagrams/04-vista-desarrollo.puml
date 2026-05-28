@@ -1,0 +1,112 @@
+@startuml
+title Arena Master — Vista de Desarrollo (Módulos/Paquetes)
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam componentStyle rectangle
+
+package "Frontend (c:/POO/torneo-frontend)" as Front {
+  package "src/app/components" {
+    [Auth (login/register)] as FE_Auth
+    [Navbar] as FE_Navbar
+    [Dashboard] as FE_Dashboard
+    [Torneos] as FE_Torneos
+    [Participantes] as FE_Participantes
+    [Encuentros] as FE_Encuentros
+    [Tabla] as FE_Tabla
+  }
+
+  package "src/app/services" {
+    [AuthService] as FE_AuthService
+    [TorneoService] as FE_TorneoService
+    [ParticipanteService] as FE_PartService
+    [EncuentroService] as FE_EncService
+    [TablaService] as FE_TablaService
+  }
+
+  package "src/app/guards" {
+    [authGuard] as FE_AuthGuard
+    [roleGuard] as FE_RoleGuard
+  }
+
+  package "src/app/interceptors" {
+    [authInterceptor] as FE_AuthInterceptor
+    [timeoutInterceptor] as FE_TimeoutInterceptor
+  }
+}
+
+package "Backend (c:/POO/torneo-system)" as Back {
+  package "controller" {
+    [AuthController] as BE_AuthC
+    [TorneoController] as BE_TorneoC
+    [ParticipanteController] as BE_PartC
+    [EncuentroController] as BE_EncC
+    [TablaController] as BE_TablaC
+  }
+  package "service" {
+    [AuthService] as BE_AuthS
+    [TorneoService] as BE_TorneoS
+    [ParticipanteService] as BE_PartS
+    [EncuentroService] as BE_EncS
+    [TablaService] as BE_TablaS
+  }
+  package "repository" {
+    [UsuarioRepository] as BE_UserR
+    [TorneoRepository] as BE_TorneoR
+    [EncuentroRepository] as BE_EncR
+    [TablaPosicionesRepository] as BE_TablaR
+  }
+  package "config" {
+    [SecurityConfig] as BE_Sec
+    [JwtAuthFilter] as BE_Filter
+    [JwtService] as BE_Jwt
+    [CorsConfig] as BE_Cors
+    [UserDetailsServiceImpl] as BE_UDS
+  }
+  package "model" {
+    [Usuario] as M_User
+    [Torneo] as M_Torneo
+    [Encuentro] as M_Enc
+    [TablaPosiciones] as M_Tabla
+    [Resultado] as M_Result
+    [Participante] as M_Part
+  }
+  package "dto" {
+    [Request DTOs] as BE_Req
+    [Response DTOs] as BE_Res
+    [Mappers] as BE_Map
+  }
+}
+
+FE_Auth --> FE_AuthService
+FE_Torneos --> FE_TorneoService
+FE_Encuentros --> FE_EncService
+FE_Tabla --> FE_TablaService
+FE_Participantes --> FE_PartService
+
+FE_AuthGuard --> FE_AuthService
+FE_RoleGuard --> FE_AuthService
+FE_AuthService --> FE_AuthInterceptor
+FE_TorneoService --> FE_AuthInterceptor
+FE_EncService --> FE_AuthInterceptor
+FE_TablaService --> FE_AuthInterceptor
+FE_PartService --> FE_AuthInterceptor
+FE_AuthInterceptor --> FE_TimeoutInterceptor
+
+BE_AuthC --> BE_AuthS
+BE_TorneoC --> BE_TorneoS
+BE_PartC --> BE_PartS
+BE_EncC --> BE_EncS
+BE_TablaC --> BE_TablaS
+
+BE_AuthS --> BE_UserR
+BE_TorneoS --> BE_TorneoR
+BE_TorneoS --> BE_EncR
+BE_TorneoS --> BE_TablaR
+BE_EncS --> BE_EncR
+BE_TablaS --> BE_TablaR
+
+BE_Sec --> BE_Filter
+BE_Filter --> BE_Jwt
+BE_Filter --> BE_UDS
+@enduml

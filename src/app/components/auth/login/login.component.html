@@ -1,0 +1,67 @@
+<main class="w-full max-w-[1200px] grid lg:grid-cols-2 bg-surface-container-lowest rounded-xl overflow-hidden shadow-2xl border border-outline-variant/30 min-h-[700px] mx-auto my-xl">
+  <!-- Brand/Marketing Side (Hidden on Mobile) -->
+  <section class="relative hidden lg:flex flex-col justify-end p-xl overflow-hidden">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+      <img class="w-full h-full object-cover" data-alt="A high-intensity esports arena background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKj1vKzLvQ_rb4gqCaNGP9ZS3B3f2FNlw5OYQj3aSINX94GK5TtFGopaSEdIGQWgP9ld4LsJu3Xi4LWkptl4WvFD6TFz1ggh5SVOHW_-OLCIuB6cmzSxbmB8aO6qSw-irSGHsMQ5taawESKQo0lGElcUjrrbtXcYVf4dTNcvGhjFAM4VxX4EF0ygs0DyKU23IQlz9b8L0_T_dIJ_4kKcESGauuTOQkPVorg7alaMdLpDtK3ZPKrz483wZHRm--n3XVdNsCRHeFZJ4"/>
+      <div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+    </div>
+    <!-- Content -->
+    <div class="relative z-10 space-y-md">
+      <div class="inline-flex items-center gap-base px-sm py-xs bg-secondary-container/20 border border-secondary-container/50 rounded-full">
+        <span class="material-symbols-outlined text-secondary text-sm">trophy</span>
+        <span class="font-label-lg text-label-lg text-secondary uppercase tracking-widest">Arena Master Pro</span>
+      </div>
+      <h1 class="font-display-lg text-display-lg text-white max-w-md">
+        Sistema de <span class="text-secondary">Torneos</span>
+      </h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant max-w-sm">
+        La plataforma definitiva para la gestión de ligas profesionales, brackets en tiempo real y estadísticas de alto rendimiento.
+      </p>
+    </div>
+  </section>
+
+  <!-- Form Side -->
+  <section class="flex items-center justify-center p-margin-mobile md:p-margin-desktop bg-surface-container-low relative">
+    <div class="w-full max-w-[400px] space-y-lg">
+      <div class="space-y-base">
+        <h2 class="font-headline-lg text-headline-lg text-on-surface">Bienvenido de nuevo</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant">Ingresa tus credenciales para acceder a la arena.</p>
+      </div>
+
+      @if (error) {
+        <div class="p-md bg-error-container text-on-error-container rounded-xl flex items-center gap-md">
+          <span class="material-symbols-outlined" data-icon="error">error</span>
+          <span>{{ error }}</span>
+        </div>
+      }
+
+      <form (submit)="login(); $event.preventDefault()" class="space-y-md">
+        <div class="space-y-xs">
+          <label class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider block">Usuario</label>
+          <div class="relative group">
+            <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-secondary transition-colors">person</span>
+            <input [(ngModel)]="request.username" name="username" class="w-full bg-surface-container-highest border border-outline-variant/50 rounded-lg py-3 pl-11 pr-4 text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" placeholder="Tu usuario" type="text" required/>
+          </div>
+        </div>
+        <div class="space-y-xs">
+          <label class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider block">Contraseña</label>
+          <div class="relative group">
+            <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-secondary transition-colors">lock</span>
+            <input [(ngModel)]="request.password" name="password" class="w-full bg-surface-container-highest border border-outline-variant/50 rounded-lg py-3 pl-11 pr-4 text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" placeholder="••••••••" type="password" required/>
+          </div>
+        </div>
+        
+        <button [disabled]="cargando" class="w-full bg-secondary-container hover:bg-secondary-container/90 text-on-secondary-container font-label-lg text-label-lg py-4 rounded-lg shadow-[0px_10px_30px_rgba(5,102,217,0.3)] transition-all active:scale-95 flex items-center justify-center gap-base uppercase tracking-widest" type="submit">
+          {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+          <span class="material-symbols-outlined text-md">login</span>
+        </button>
+      </form>
+
+      <p class="text-center font-body-md text-body-md text-on-surface-variant">
+        ¿No tienes una cuenta? 
+        <a routerLink="/register" class="text-secondary font-semibold hover:underline">Registrarse</a>
+      </p>
+    </div>
+  </section>
+</main>

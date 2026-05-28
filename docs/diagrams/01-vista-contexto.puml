@@ -1,0 +1,38 @@
+@startuml
+title Arena Master — Vista de Contexto
+top to bottom direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+
+rectangle "Administrador\n(ROLE_ADMIN)" as Admin
+rectangle "Espectador\n(ROLE_USER)" as Viewer
+rectangle "Soporte Técnico" as Support
+database "Base de Datos" as DB
+
+(Sistema Arena Master) as System
+
+Admin --> System : Configuración y gestión\n(Crear/Editar/Eliminar torneos)
+Admin --> System : Registrar participantes\n(Fútbol/Basket/Tenis)
+Admin --> System : Iniciar fases\n(Grupos/Eliminación)
+Admin --> System : Registrar resultados\n(Encuentros)
+System --> Admin : Reportes / estado\n(Alertas de fases)
+
+Viewer --> System : Consulta de torneos\nprogreso y fases
+System --> Viewer : Encuentros\n(Todos/por fase)
+System --> Viewer : Tabla de posiciones
+
+System --> DB : Persistencia\nTorneos/Encuentros/Tabla/Usuarios
+DB --> System : Datos de torneo\n(participantes y resultados)
+
+System --> Support : Logs de errores\n(eventos y fallos)
+Support --> System : Asistencia técnica\n(incidencias)
+
+note right of System
+Acceso:
+- Frontend Angular (SPA)
+- Backend Spring Boot (API REST)
+- JWT (Bearer) con roles
+end note
+@enduml

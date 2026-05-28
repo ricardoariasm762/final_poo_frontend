@@ -1,0 +1,33 @@
+@startuml
+title Arena Master — Vista de Despliegue
+left to right direction
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+
+node "PC Usuario\n(Navegador)" as Client {
+  artifact "SPA Angular\nhttp://localhost:4200" as SPA
+}
+
+node "Servidor de Aplicación" as AppServer {
+  artifact "Spring Boot API\nhttp://localhost:8080" as API
+}
+
+database "DB\n(PostgreSQL/MySQL)\n:5432/:3306" as DB
+
+SPA --> API : REST/JSON\nAuthorization: Bearer JWT
+API --> DB : JPA/Hibernate\nSQL
+
+note right of SPA
+Dev:
+Angular usa proxy.conf.json:
+/api -> http://localhost:8080
+end note
+
+note right of API
+Spring Security:
+- /api/auth/** público
+- GET /api/** autenticado
+- POST/PUT/DELETE según ROLE_ADMIN
+end note
+@enduml

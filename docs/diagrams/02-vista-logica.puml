@@ -1,0 +1,47 @@
+@startuml
+title Arena Master — Vista Lógica (Capas y Componentes)
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam componentStyle rectangle
+
+package "Frontend Angular" as FE {
+  [UI Components\n(Dashboard/Torneos/Encuentros/Tabla/Participantes)] as UI
+  [Guards\n(authGuard/roleGuard)] as Guards
+  [HTTP Interceptors\n(auth/timeout)] as Interceptors
+  [Services\n(Auth/Torneo/Encuentro/Tabla/Participante)] as FEServices
+}
+
+package "Backend Spring Boot" as BE {
+  [Controllers\n(Auth/Torneo/Participante/Encuentro/Tabla)] as Controllers
+  [Services\n(Auth/Torneo/Encuentro/Tabla/Participante)] as Services
+  [DTO + Mapper\n(Request/Response)] as DTO
+  [Security\n(SecurityConfig/JwtAuthFilter/JwtService)] as Security
+  [Repositories\n(JPA)] as Repos
+  [Domain Model\n(Torneo/Encuentro/TablaPosiciones/\nParticipantes/Usuario)] as Model
+}
+
+database "DB" as DB
+
+UI --> Guards : Control de acceso\npor rutas y roles
+UI --> FEServices : Acciones de usuario\n(CRUD/flujo)
+FEServices --> Interceptors : Adjunta JWT\ny timeout
+Interceptors --> Controllers : REST/JSON
+
+Controllers --> Security : Autorización\n(Spring Security)
+Controllers --> Services : Orquestación\nreglas de negocio
+Services --> DTO : Mapear Request/Response
+Services --> Repos : Persistencia\n(JPA)
+Repos --> DB
+Services --> Model
+Repos --> Model
+DTO --> Model
+Security --> Services : Carga usuario/roles
+
+note bottom of Services
+Reglas principales:
+- Iniciar fase de grupos genera encuentros y tabla.
+- Registrar resultado actualiza tabla.
+- Transiciones de estado del torneo controladas.
+end note
+@enduml

@@ -1,0 +1,287 @@
+<!-- TopAppBar -->
+<header class="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-white/10 px-margin-desktop py-base flex justify-between items-center shadow-[0px_10px_30px_rgba(59,130,246,0.15)]">
+  <div class="flex flex-col">
+    <h2 class="font-headline-lg text-headline-lg text-on-surface leading-tight">Participantes</h2>
+    <nav class="flex space-x-4 mt-2">
+      <span class="text-on-surface-variant font-label-md text-label-md">Equipos</span>
+      <span class="text-outline">/</span>
+      <span class="text-primary font-label-md text-label-md">Gestión Central</span>
+    </nav>
+  </div>
+  <div class="flex items-center space-x-4">
+    <button (click)="mostrarForm = !mostrarForm" 
+            class="bg-secondary-container text-on-secondary-container px-6 py-2.5 rounded-lg font-bold flex items-center space-x-2 hover:scale-[1.02] active:scale-95 transition-all">
+      <span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+      <span class="font-label-lg text-label-lg">{{ mostrarForm ? 'Cancelar' : 'Nuevo Participante' }}</span>
+    </button>
+  </div>
+</header>
+
+@if (error) {
+  <div class="m-margin-desktop p-md bg-error-container text-on-error-container rounded-xl flex items-center gap-md">
+    <span class="material-symbols-outlined" data-icon="error">error</span>
+    <span>{{ error }}</span>
+  </div>
+}
+
+@if (exito) {
+  <div class="m-margin-desktop p-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-xl flex items-center gap-md">
+    <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+    <span>{{ exito }}</span>
+  </div>
+}
+
+<!-- Content Body -->
+<div class="px-margin-desktop py-lg space-y-lg">
+  <!-- Category Tabs -->
+  <div class="flex items-center justify-between border-b border-outline-variant">
+    <div class="flex space-x-8">
+      <button (click)="setTab('futbol')" 
+              [class.text-primary]="tabActiva === 'futbol'" 
+              [class.border-primary]="tabActiva === 'futbol'"
+              class="pb-4 px-2 font-bold transition-all flex items-center space-x-2 border-b-2"
+              [class.border-transparent]="tabActiva !== 'futbol'">
+        <span class="material-symbols-outlined" data-icon="sports_soccer">sports_soccer</span>
+        <span class="font-label-lg text-label-lg">Fútbol ({{ futbol.length }})</span>
+      </button>
+      <button (click)="setTab('baloncesto')" 
+              [class.text-primary]="tabActiva === 'baloncesto'" 
+              [class.border-primary]="tabActiva === 'baloncesto'"
+              class="pb-4 px-2 font-bold transition-all flex items-center space-x-2 border-b-2"
+              [class.border-transparent]="tabActiva !== 'baloncesto'">
+        <span class="material-symbols-outlined" data-icon="sports_basketball">sports_basketball</span>
+        <span class="font-label-lg text-label-lg">Baloncesto ({{ baloncesto.length }})</span>
+      </button>
+      <button (click)="setTab('tenis')" 
+              [class.text-primary]="tabActiva === 'tenis'" 
+              [class.border-primary]="tabActiva === 'tenis'"
+              class="pb-4 px-2 font-bold transition-all flex items-center space-x-2 border-b-2"
+              [class.border-transparent]="tabActiva !== 'tenis'">
+        <span class="material-symbols-outlined" data-icon="sports_tennis">sports_tennis</span>
+        <span class="font-label-lg text-label-lg">Tenis ({{ tenis.length }})</span>
+      </button>
+    </div>
+  </div>
+
+  @if (mostrarForm) {
+    <section class="glass-card rounded-xl p-xl space-y-lg">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Registrar en {{ tabActiva | titlecase }}</h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+        @if (tabActiva === 'futbol') {
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Nombre</label>
+            <input [(ngModel)]="futbolReq.nombre" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Ciudad</label>
+            <input [(ngModel)]="futbolReq.ciudad" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Entrenador</label>
+            <input [(ngModel)]="futbolReq.entrenador" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Estadio</label>
+            <input [(ngModel)]="futbolReq.estadio" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Color Camiseta</label>
+            <input [(ngModel)]="futbolReq.colorCamiseta" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Plantilla</label>
+            <input [(ngModel)]="futbolReq.numeroPlantel" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="number"/>
+          </div>
+        }
+        @if (tabActiva === 'baloncesto') {
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Nombre</label>
+            <input [(ngModel)]="baloncestoReq.nombre" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Ciudad</label>
+            <input [(ngModel)]="baloncestoReq.ciudad" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Entrenador</label>
+            <input [(ngModel)]="baloncestoReq.entrenador" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Cancha</label>
+            <input [(ngModel)]="baloncestoReq.cancha" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Conferencia</label>
+            <input [(ngModel)]="baloncestoReq.conferencia" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Plantilla</label>
+            <input [(ngModel)]="baloncestoReq.numeroPlantel" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="number"/>
+          </div>
+        }
+        @if (tabActiva === 'tenis') {
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Nombre</label>
+            <input [(ngModel)]="tenisReq.nombre" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Ciudad</label>
+            <input [(ngModel)]="tenisReq.ciudad" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Entrenador</label>
+            <input [(ngModel)]="tenisReq.entrenador" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Nacionalidad</label>
+            <input [(ngModel)]="tenisReq.nacionalidad" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="text"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Ranking</label>
+            <input [(ngModel)]="tenisReq.ranking" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface" type="number"/>
+          </div>
+          <div class="space-y-xs">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-outline">Mano Hábil</label>
+            <select [(ngModel)]="tenisReq.manoHabil" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface">
+              <option value="DIESTRA">Diestra</option>
+              <option value="ZURDA">Zurda</option>
+            </select>
+          </div>
+        }
+      </div>
+      
+      <div class="flex gap-md pt-md">
+        <button (click)="guardar()" class="px-lg py-md bg-primary text-on-primary font-bold rounded-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-sm">
+          <span class="material-symbols-outlined" data-icon="save">save</span>
+          Guardar Registro
+        </button>
+        <button (click)="mostrarForm = false" class="px-lg py-md border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-variant transition-all">
+          Cancelar
+        </button>
+      </div>
+    </section>
+  }
+
+  <!-- Bento Grid - Participant Display -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+    @if (tabActiva === 'futbol') {
+      @for (e of futbol; track e.id) {
+        <div class="glass-card rounded-xl p-md flex flex-col relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+          <div class="flex items-center space-x-4 mb-6">
+            <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-white/10 p-2">
+              <span class="material-symbols-outlined text-primary text-3xl">sports_soccer</span>
+            </div>
+            <div>
+              <h3 class="font-headline-md text-xl font-bold text-on-surface">{{ e.nombre }}</h3>
+              <p class="text-on-surface-variant text-sm flex items-center">
+                <span class="material-symbols-outlined text-sm mr-1" data-icon="location_on">location_on</span> {{ e.ciudad }}
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Entrenador</p>
+              <p class="font-medium text-on-surface truncate">{{ e.entrenador }}</p>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Plantilla</p>
+              <p class="font-medium text-on-surface">{{ e.numeroPlantel }} Jugadores</p>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Estadio</p>
+              <p class="font-medium text-on-surface truncate">{{ e.estadio }}</p>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Equipación</p>
+              <p class="font-medium text-on-surface truncate">{{ e.colorCamiseta }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    }
+
+    @if (tabActiva === 'baloncesto') {
+      @for (e of baloncesto; track e.id) {
+        <div class="glass-card rounded-xl p-md flex flex-col relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+          <div class="flex items-center space-x-4 mb-6">
+            <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-white/10 p-2">
+              <span class="material-symbols-outlined text-primary text-3xl">sports_basketball</span>
+            </div>
+            <div>
+              <h3 class="font-headline-md text-xl font-bold text-on-surface">{{ e.nombre }}</h3>
+              <p class="text-on-surface-variant text-sm flex items-center">
+                <span class="material-symbols-outlined text-sm mr-1" data-icon="location_on">location_on</span> {{ e.ciudad }}
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Entrenador</p>
+              <p class="font-medium text-on-surface truncate">{{ e.entrenador }}</p>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Plantilla</p>
+              <p class="font-medium text-on-surface">{{ e.numeroPlantel }} Jugadores</p>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Cancha</p>
+              <p class="font-medium text-on-surface truncate">{{ e.cancha }}</p>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Conferencia</p>
+              <p class="font-medium text-on-surface truncate">{{ e.conferencia }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    }
+
+    @if (tabActiva === 'tenis') {
+      @for (e of tenis; track e.id) {
+        <div class="glass-card rounded-xl p-md flex flex-col relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+          <div class="flex items-center space-x-4 mb-6">
+            <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-white/10 p-2">
+              <span class="material-symbols-outlined text-primary text-3xl">sports_tennis</span>
+            </div>
+            <div>
+              <h3 class="font-headline-md text-xl font-bold text-on-surface">{{ e.nombre }}</h3>
+              <p class="text-on-surface-variant text-sm flex items-center">
+                <span class="material-symbols-outlined text-sm mr-1" data-icon="location_on">location_on</span> {{ e.ciudad }}
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Entrenador</p>
+              <p class="font-medium text-on-surface truncate">{{ e.entrenador }}</p>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Ranking</p>
+              <p class="font-medium text-on-surface">#{{ e.ranking }}</p>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Nacionalidad</p>
+              <p class="font-medium text-on-surface truncate">{{ e.nacionalidad }}</p>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <p class="text-outline text-[10px] font-bold uppercase tracking-wider mb-1">Mano Hábil</p>
+              <p class="font-medium text-on-surface truncate">{{ e.manoHabil }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    }
+
+    <!-- Add New Card CTA -->
+    <div (click)="mostrarForm = true" class="glass-card rounded-xl border-dashed border-2 border-outline-variant flex flex-col items-center justify-center p-xl gap-md group hover:border-primary transition-all cursor-pointer">
+      <div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-primary-container transition-colors">
+        <span class="material-symbols-outlined text-outline group-hover:text-primary text-[32px]" data-icon="person_add">person_add</span>
+      </div>
+      <div class="text-center">
+        <span class="font-label-lg text-label-lg text-on-surface block mb-xs">Registrar Participante</span>
+        <span class="text-on-surface-variant font-label-md text-label-md">Añadir a {{ tabActiva | titlecase }}</span>
+      </div>
+    </div>
+  </div>
+</div>

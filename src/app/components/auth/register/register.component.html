@@ -1,0 +1,97 @@
+<main class="min-h-screen flex flex-col md:flex-row">
+  <!-- Left Section: Impactful Image & Branding -->
+  <section class="hidden md:flex md:w-1/2 relative overflow-hidden bg-primary-container">
+    <img alt="Arena Master Tournament" class="absolute inset-0 w-full h-full object-cover opacity-60" data-alt="A high-energy, wide-angle shot of a professional esports arena" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCELDRhNXlvODGmZFTeQjxozdQiyuKypRCrC_lORRAcBkTBhEvAgI6g5gLayLBPEgfkW66FGu7QJIVUbogZDHfKklqWbbQSr1SFTXLeypbGEYF8xUXBjUQjLBH6647QSjKNvEjJdkxvl-F6JiIBfNLratfcj1mrc6ag4bMB1MXJ7ec1kXEvYNP8at2q1fGvF80hNbDk3SURiGeciSMl0u-G9G0prhpdRkHcNZ-LMTP3nT8L4yUGTqx8ah8QeKDnfDGu56gh_bGT8X4"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+    <div class="relative z-10 flex flex-col justify-between p-margin-desktop w-full h-full">
+      <div class="flex items-center space-x-base">
+        <span class="font-display-lg text-display-lg font-extrabold text-primary">Arena Master</span>
+      </div>
+      <div class="space-y-md max-w-lg">
+        <h2 class="font-headline-lg text-headline-lg leading-tight">Únete a la élite del gaming competitivo.</h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">La plataforma definitiva para gestionar, participar y ganar en los torneos más prestigiosos de la región.</p>
+      </div>
+      <div class="flex space-x-lg opacity-60">
+        <div class="flex flex-col">
+          <span class="font-headline-md text-headline-md text-primary font-bold">500+</span>
+          <span class="font-label-md text-label-md uppercase tracking-widest">Torneos Semanales</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-headline-md text-headline-md text-primary font-bold">25k+</span>
+          <span class="font-label-md text-label-md uppercase tracking-widest">Jugadores Activos</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Right Section: Register Form -->
+  <section class="flex-1 flex flex-col justify-center items-center p-margin-mobile md:p-margin-desktop bg-surface">
+    <div class="w-full max-w-md space-y-lg">
+      <div class="text-center md:text-left space-y-base">
+        <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Crear una cuenta</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant">Empieza tu camino hacia la gloria profesional hoy mismo.</p>
+      </div>
+
+      @if (error) {
+        <div class="p-md bg-error-container text-on-error-container rounded-xl flex items-center gap-md">
+          <span class="material-symbols-outlined" data-icon="error">error</span>
+          <span>{{ error }}</span>
+        </div>
+      }
+
+      <form (submit)="register(); $event.preventDefault()" class="space-y-gutter">
+        <div class="space-y-md">
+          <div class="space-y-xs">
+            <label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant ml-xs">Usuario</label>
+            <div class="relative group">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">person</span>
+              <input [(ngModel)]="request.username" name="username" class="w-full bg-surface-container-low border-outline-variant rounded-lg pl-12 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-secondary-container focus:border-secondary-container transition-all outline-none" placeholder="Nombre de usuario" type="text" required/>
+            </div>
+          </div>
+          <div class="space-y-xs">
+            <label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant ml-xs">Contraseña</label>
+            <div class="relative group">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock</span>
+              <input [(ngModel)]="request.password" name="password" class="w-full bg-surface-container-low border-outline-variant rounded-lg pl-12 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-secondary-container focus:border-secondary-container transition-all outline-none" placeholder="••••••••" type="password" required/>
+            </div>
+          </div>
+          <div class="space-y-xs">
+            <label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant ml-xs">Confirmar Contraseña</label>
+            <div class="relative group">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock_reset</span>
+              <input [(ngModel)]="confirmPassword" name="confirmPassword" class="w-full bg-surface-container-low border-outline-variant rounded-lg pl-12 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-secondary-container focus:border-secondary-container transition-all outline-none" placeholder="••••••••" type="password" required/>
+            </div>
+          </div>
+          <div class="space-y-xs">
+            <label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant ml-xs">Correo Electrónico</label>
+            <div class="relative group">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">mail</span>
+              <input [(ngModel)]="request.email" name="email" class="w-full bg-surface-container-low border-outline-variant rounded-lg pl-12 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-secondary-container focus:border-secondary-container transition-all outline-none" placeholder="admin@ejemplo.com" type="email" required/>
+            </div>
+          </div>
+          <div class="space-y-xs">
+            <label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant ml-xs">Tipo de Usuario</label>
+            <div class="relative group">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">badge</span>
+              <select (change)="onRoleChange($event)" class="w-full bg-surface-container-low border-outline-variant rounded-lg pl-12 py-3 text-on-surface focus:ring-2 focus:ring-secondary-container focus:border-secondary-container transition-all outline-none appearance-none">
+                <option value="ROLE_ESPECTADOR">Espectador</option>
+                <option value="ROLE_ADMIN">Administrador</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-base">
+          <button [disabled]="cargando" class="w-full bg-secondary-container text-on-secondary-container py-4 rounded-xl font-headline-md text-headline-md font-bold glow-button hover:scale-[1.01] transition-transform active:scale-95" type="submit">
+            {{ cargando ? 'Creando cuenta...' : 'Crear Cuenta' }}
+          </button>
+        </div>
+
+        <p class="text-center font-body-md text-body-md text-on-surface-variant">
+          ¿Ya tienes una cuenta? 
+          <a routerLink="/login" class="text-primary font-bold hover:underline transition-all">Inicia Sesión</a>
+        </p>
+      </form>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,104 @@
+<div class="px-margin-mobile md:px-margin-desktop pt-lg pb-xl">
+<header class="flex justify-between items-end mb-xl">
+  <div class="space-y-xs">
+    <div class="flex items-center gap-xs text-primary mb-xs">
+      <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+      <span class="font-label-lg text-label-lg uppercase tracking-widest">Panel de Administración</span>
+    </div>
+    <h2 class="font-headline-lg text-headline-lg text-on-surface">Dashboard</h2>
+    <p class="text-on-surface-variant max-w-xl">Crea y configura nuevos eventos deportivos de forma rápida.</p>
+  </div>
+</header>
+
+@if (error) {
+  <div class="mb-gutter p-md bg-error-container text-on-error-container rounded-xl flex items-center gap-md">
+    <span class="material-symbols-outlined" data-icon="error">error</span>
+    <span>{{ error }}</span>
+  </div>
+}
+
+@if (exito) {
+  <div class="mb-gutter p-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-xl flex items-center gap-md">
+    <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+    <span>{{ exito }}</span>
+  </div>
+}
+
+<!-- Quick Actions -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-xl">
+  <button (click)="abrirFormularioCrear('FUTBOL')" 
+          class="glass-card p-xl rounded-xl flex flex-col items-center gap-md group hover:border-emerald-500/50 transition-all cursor-pointer">
+    <div class="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+      <span class="material-symbols-outlined text-emerald-500 text-[32px]">sports_soccer</span>
+    </div>
+    <div class="text-center">
+      <span class="font-label-lg text-label-lg text-on-surface block mb-xs">Nuevo Torneo Fútbol</span>
+      <span class="text-on-surface-variant font-label-md text-label-md">Crea una liga o copa de fútbol.</span>
+    </div>
+  </button>
+
+  <button (click)="abrirFormularioCrear('BALONCESTO')" 
+          class="glass-card p-xl rounded-xl flex flex-col items-center gap-md group hover:border-orange-500/50 transition-all cursor-pointer">
+    <div class="w-16 h-16 rounded-full bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500/20 transition-colors">
+      <span class="material-symbols-outlined text-orange-500 text-[32px]">sports_basketball</span>
+    </div>
+    <div class="text-center">
+      <span class="font-label-lg text-label-lg text-on-surface block mb-xs">Nuevo Torneo Basket</span>
+      <span class="text-on-surface-variant font-label-md text-label-md">Organiza un torneo de baloncesto.</span>
+    </div>
+  </button>
+
+  <button (click)="abrirFormularioCrear('TENIS')" 
+          class="glass-card p-xl rounded-xl flex flex-col items-center gap-md group hover:border-blue-500/50 transition-all cursor-pointer">
+    <div class="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+      <span class="material-symbols-outlined text-blue-500 text-[32px]">sports_tennis</span>
+    </div>
+    <div class="text-center">
+      <span class="font-label-lg text-label-lg text-on-surface block mb-xs">Nuevo Torneo Tenis</span>
+      <span class="text-on-surface-variant font-label-md text-label-md">Inicia un campeonato de tenis.</span>
+    </div>
+  </button>
+</section>
+
+<!-- New Tournament Form -->
+@if (mostrarFormulario) {
+  <section class="glass-card rounded-xl p-xl space-y-lg animate-fade-in">
+    <h3 class="font-headline-md text-headline-md text-on-surface mb-md">Configurar Nuevo Evento: {{ request.deporte }}</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+      <div class="space-y-xs">
+        <label class="font-label-md text-label-md text-on-surface-variant ml-1">Nombre del Torneo</label>
+        <input [(ngModel)]="request.nombre" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface focus:ring-2 focus:ring-secondary" type="text" placeholder="Ej: Copa de Verano 2024"/>
+      </div>
+      <div class="space-y-xs">
+        <label class="font-label-md text-label-md text-on-surface-variant ml-1">Fecha de Inicio</label>
+        <input [(ngModel)]="request.fechaInicio" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface focus:ring-2 focus:ring-secondary" type="date"/>
+      </div>
+      <div class="space-y-xs">
+        <label class="font-label-md text-label-md text-on-surface-variant ml-1">Fecha de Fin</label>
+        <input [(ngModel)]="request.fechaFin" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface focus:ring-2 focus:ring-secondary" type="date"/>
+      </div>
+      <div class="space-y-xs">
+        <label class="font-label-md text-label-md text-on-surface-variant ml-1">Cantidad de Grupos</label>
+        <input [(ngModel)]="request.cantidadGrupos" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface focus:ring-2 focus:ring-secondary" type="number" min="1"/>
+      </div>
+      <div class="space-y-xs">
+        <label class="font-label-md text-label-md text-on-surface-variant ml-1">Clasificados por Grupo</label>
+        <input [(ngModel)]="request.clasificadosPorGrupo" class="w-full bg-surface-container-high border-none rounded-lg px-md py-sm text-on-surface focus:ring-2 focus:ring-secondary" type="number" min="1"/>
+      </div>
+    </div>
+    <div class="flex gap-md pt-md">
+      <button (click)="crear()" [disabled]="cargando" class="px-lg py-md bg-primary text-on-primary font-bold rounded-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-sm disabled:opacity-50">
+        @if (cargando) {
+          <div class="w-5 h-5 border-2 border-on-primary border-t-transparent rounded-full animate-spin"></div>
+        } @else {
+          <span class="material-symbols-outlined" data-icon="save">save</span>
+        }
+        Guardar Competición
+      </button>
+      <button (click)="mostrarFormulario = false" class="px-lg py-md border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-variant transition-all">
+        Cancelar
+      </button>
+    </div>
+  </section>
+}
+</div>
