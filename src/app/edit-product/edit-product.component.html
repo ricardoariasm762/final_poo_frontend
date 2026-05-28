@@ -1,0 +1,97 @@
+<section class="min-h-[calc(100vh-73px)] bg-slate-50 px-8 py-8">
+  <nav class="mb-4 text-sm text-slate-400">
+    <span class="cursor-pointer hover:text-slate-600" (click)="onCancel()">Dashboard</span>
+    <span class="mx-2">></span>
+    <span class="cursor-pointer hover:text-slate-600" (click)="onCancel()">Productos</span>
+    <span class="mx-2">></span>
+    <span class="font-medium text-slate-700">Editar Producto</span>
+  </nav>
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-900">Editar Producto</h1>
+    <p class="mt-1 text-sm text-slate-500">Actualiza los datos del producto o elimínalo.</p>
+  </div>
+
+  <div *ngIf="successMessage" class="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="error" class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+    {{ error }}
+  </div>
+
+  <div *ngIf="loadingProduct" class="flex justify-center py-20">
+    <div class="h-10 w-10 animate-spin rounded-full border-b-2 border-slate-900"></div>
+  </div>
+
+  <div *ngIf="!loadingProduct" class="max-w-2xl rounded-xl border border-slate-200 bg-white shadow-sm">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-8">
+      <div class="mb-6">
+        <label for="nombre" class="mb-2 block text-sm font-semibold text-slate-900">
+          Nombre del producto
+          <span class="text-red-500">*</span>
+        </label>
+        <input
+          id="nombre"
+          type="text"
+          formControlName="nombre"
+          class="w-full rounded-lg border border-slate-300 px-4 py-2.5 transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-900"
+          [class.border-red-500]="nombre?.invalid && nombre?.touched"
+        />
+        <div *ngIf="nombre?.invalid && nombre?.touched" class="mt-1 text-sm text-red-600">
+          <span *ngIf="nombre?.hasError('required')">El nombre es requerido</span>
+          <span *ngIf="nombre?.hasError('minlength')">Debe tener al menos 2 caracteres</span>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <label for="precio" class="mb-2 block text-sm font-semibold text-slate-900">
+          Precio
+          <span class="text-red-500">*</span>
+        </label>
+        <input
+          id="precio"
+          type="number"
+          min="0"
+          formControlName="precio"
+          class="w-full rounded-lg border border-slate-300 px-4 py-2.5 transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-900"
+          [class.border-red-500]="precio?.invalid && precio?.touched"
+        />
+        <div *ngIf="precio?.invalid && precio?.touched" class="mt-1 text-sm text-red-600">
+          <span *ngIf="precio?.hasError('required')">El precio es requerido</span>
+          <span *ngIf="precio?.hasError('min')">El precio no puede ser negativo</span>
+        </div>
+      </div>
+
+      <div class="flex gap-4">
+        <button
+          type="submit"
+          [disabled]="form.invalid || loading"
+          class="flex-1 rounded-lg bg-slate-900 px-6 py-2.5 font-semibold text-white transition-colors duration-200 hover:bg-slate-700 disabled:bg-slate-400"
+        >
+          {{ loading ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+
+        <button
+          type="button"
+          (click)="onCancel()"
+          [disabled]="loading"
+          class="flex-1 rounded-lg bg-slate-200 px-6 py-2.5 font-semibold text-slate-900 transition-colors duration-200 hover:bg-slate-300 disabled:bg-slate-300"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <div class="mt-6">
+        <button
+          type="button"
+          (click)="deleteProduct()"
+          [disabled]="loading"
+          class="w-full rounded-lg border border-red-200 bg-red-50 px-6 py-2.5 font-semibold text-red-700 transition-colors duration-200 hover:bg-red-100"
+        >
+          Eliminar producto
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

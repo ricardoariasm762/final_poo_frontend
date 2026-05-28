@@ -1,0 +1,123 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+
+  <!-- Split card -->
+  <div class="flex w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden">
+
+    <!-- Left panel -->
+    <div class="hidden md:flex flex-col items-center justify-center w-2/5 bg-gray-900 px-10 py-16 text-white">
+      <div class="bg-gray-800 rounded-2xl p-5 mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.6 8H19M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold mb-3 text-center">OrderManager Pro</h1>
+      <p class="text-gray-400 text-sm text-center leading-relaxed">
+        Logística inteligente y gestión de pedidos de alto rendimiento para administradores globales.
+      </p>
+    </div>
+
+    <!-- Right panel -->
+    <div class="flex flex-col justify-center w-full md:w-3/5 bg-white px-10 py-14">
+
+      <h2 class="text-2xl font-bold text-gray-900 mb-1">Bienvenido de nuevo</h2>
+      <p class="text-sm text-gray-500 mb-8">
+        Ingrese sus credenciales para acceder al panel de administración.
+      </p>
+
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="mb-5 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm flex items-start gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4v2m0-12a9 9 0 110 18 9 9 0 010-18zm0-2a11 11 0 11-10 6.5" />
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm" novalidate>
+
+        <!-- Usuario -->
+        <div class="mb-5">
+          <label class="block text-xs font-semibold text-gray-500 tracking-widest uppercase mb-1.5" for="usuario">
+            Usuario
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </span>
+            <input
+              id="usuario"
+              name="usuario"
+              type="text"
+              [(ngModel)]="credentials.usuario"
+              required
+              placeholder="mtovar"
+              class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent transition"
+            />
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mb-5">
+          <label class="block text-xs font-semibold text-gray-500 tracking-widest uppercase mb-1.5" for="contrasena">
+            Contraseña
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </span>
+            <input
+              id="contrasena"
+              name="contrasena"
+              type="password"
+              [(ngModel)]="credentials.contrasena"
+              required
+              placeholder="••••••••"
+              class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent transition"
+            />
+          </div>
+        </div>
+
+        <!-- Recordarme / Olvidó contraseña -->
+        <div class="flex items-center justify-between mb-7">
+          <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              name="recordarme"
+              [(ngModel)]="credentials.recordarme"
+              class="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-800"
+            />
+            Recordarme
+          </label>
+          <a href="#" class="text-sm text-gray-700 hover:underline">¿Olvidó su contraseña?</a>
+        </div>
+
+        <!-- Botón -->
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid"
+          class="w-full bg-gray-900 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-lg transition-colors duration-200 text-sm"
+        >
+          Iniciar sesión
+        </button>
+
+      </form>
+
+      <!-- Footer -->
+      <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+        <p class="text-sm text-gray-500">
+          ¿Tiene problemas para ingresar?
+          <a href="#" class="text-gray-800 font-medium hover:underline inline-flex items-center gap-1 ml-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            Contactar soporte
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>

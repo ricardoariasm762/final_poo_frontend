@@ -1,0 +1,204 @@
+<section class="min-h-screen bg-gray-50 px-8 py-8">
+  <!-- Breadcrumb -->
+  <nav class="text-sm text-gray-400 mb-4">
+    <span class="cursor-pointer hover:text-gray-600" (click)="onCancel()">Dashboard</span>
+    <span class="mx-2">›</span>
+    <span class="cursor-pointer hover:text-gray-600" (click)="onCancel()">Clientes</span>
+    <span class="mx-2">›</span>
+    <span class="text-gray-700 font-medium">Nuevo Cliente</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Crear Nuevo Cliente</h1>
+    <p class="text-gray-500 mt-1 text-sm">Ingresa los datos del cliente para agregarlo al directorio.</p>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="mb-6 bg-green-50 border border-green-200 text-green-700 rounded-xl px-4 py-3 text-sm animate-fade-in">
+    <div class="flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      {{ successMessage }}
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="mb-6 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">
+    <div class="flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+      </svg>
+      {{ error }}
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 max-w-2xl">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-8">
+      <!-- Nombre -->
+      <div class="mb-6">
+        <label for="nombre" class="block text-sm font-semibold text-gray-900 mb-2">
+          Nombre del Cliente
+          <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+          placeholder="ej: Juan Reyes"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200"
+          [class.border-red-500]="nombre?.invalid && nombre?.touched"
+        />
+        <div *ngIf="nombre?.invalid && nombre?.touched" class="mt-1 text-sm text-red-600">
+          <span *ngIf="nombre?.hasError('required')">El nombre es requerido</span>
+          <span *ngIf="nombre?.hasError('minlength')">El nombre debe tener al menos 3 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-6">
+        <label for="email" class="block text-sm font-semibold text-gray-900 mb-2">
+          Correo Electrónico
+          <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="ej: juan.reyes@example.com"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200"
+          [class.border-red-500]="email?.invalid && email?.touched"
+        />
+        <div *ngIf="email?.invalid && email?.touched" class="mt-1 text-sm text-red-600">
+          <span *ngIf="email?.hasError('required')">El correo es requerido</span>
+          <span *ngIf="email?.hasError('email')">Ingresa un correo válido</span>
+        </div>
+      </div>
+
+      <!-- Tipo de identificación -->
+      <div class="mb-6">
+        <label for="tipoIdentificacion" class="block text-sm font-semibold text-gray-900 mb-2">
+          Tipo de Identificación
+          <span class="text-red-500">*</span>
+        </label>
+        <select
+          id="tipoIdentificacion"
+          formControlName="tipoIdentificacion"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200 bg-white"
+          [class.border-red-500]="tipoIdentificacion?.invalid && tipoIdentificacion?.touched"
+        >
+          <option value="" disabled>Selecciona una opción</option>
+          <option *ngFor="let tipo of tiposIdentificacion" [value]="tipo">{{ tipo }}</option>
+        </select>
+        <div *ngIf="tipoIdentificacion?.invalid && tipoIdentificacion?.touched" class="mt-1 text-sm text-red-600">
+          <span *ngIf="tipoIdentificacion?.hasError('required')">El tipo de identificación es requerido</span>
+        </div>
+      </div>
+
+      <!-- Número de identificación -->
+      <div class="mb-6">
+        <label for="numIdentificacion" class="block text-sm font-semibold text-gray-900 mb-2">
+          Número de Identificación
+          <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="numIdentificacion"
+          formControlName="numIdentificacion"
+          placeholder="ej: 1234567890"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200"
+          [class.border-red-500]="numIdentificacion?.invalid && numIdentificacion?.touched"
+        />
+        <div *ngIf="numIdentificacion?.invalid && numIdentificacion?.touched" class="mt-1 text-sm text-red-600">
+          <span *ngIf="numIdentificacion?.hasError('required')">El número de identificación es requerido</span>
+          <span *ngIf="numIdentificacion?.hasError('maxlength')">Máximo 10 caracteres</span>
+          <span *ngIf="numIdentificacion?.hasError('pattern')">Solo dígitos (máximo 10)</span>
+        </div>
+      </div>
+
+      <!-- Género -->
+      <div class="mb-6">
+        <label for="genero" class="block text-sm font-semibold text-gray-900 mb-2">
+          Género
+          <span class="text-red-500">*</span>
+        </label>
+        <select
+          id="genero"
+          formControlName="genero"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200 bg-white"
+          [class.border-red-500]="genero?.invalid && genero?.touched"
+        >
+          <option value="" disabled>Selecciona una opción</option>
+          <option *ngFor="let g of generos" [value]="g">{{ g }}</option>
+        </select>
+        <div *ngIf="genero?.invalid && genero?.touched" class="mt-1 text-sm text-red-600">
+          <span *ngIf="genero?.hasError('required')">El género es requerido</span>
+        </div>
+      </div>
+
+      <!-- Dirección -->
+      <div class="mb-6">
+        <label for="direccion" class="block text-sm font-semibold text-gray-900 mb-2">
+          Dirección
+        </label>
+        <input
+          type="text"
+          id="direccion"
+          formControlName="direccion"
+          placeholder="ej: Calle 159 #45-67, Bogotá"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200"
+          [class.border-red-500]="direccion?.invalid && direccion?.touched"
+        />
+        <div *ngIf="direccion?.invalid && direccion?.touched" class="mt-1 text-sm text-red-600">
+          <span *ngIf="direccion?.hasError('minlength')">La dirección debe tener al menos 5 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="mb-8">
+        <label for="telefono" class="block text-sm font-semibold text-gray-900 mb-2">
+          Teléfono
+        </label>
+        <input
+          type="tel"
+          id="telefono"
+          formControlName="telefono"
+          placeholder="ej: 3001239967"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200"
+          [class.border-red-500]="telefono?.invalid && telefono?.touched"
+        />
+        <div *ngIf="telefono?.invalid && telefono?.touched" class="mt-1 text-sm text-red-600">
+          <span *ngIf="telefono?.hasError('pattern')">El teléfono debe tener entre 7 y 15 dígitos</span>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-4">
+        <button
+          type="submit"
+          [disabled]="form.invalid || loading"
+          class="flex-1 bg-gray-900 hover:bg-gray-700 disabled:bg-gray-400 text-white font-semibold px-6 py-2.5 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+        >
+          <span *ngIf="!loading">Crear Cliente</span>
+          <span *ngIf="loading" class="flex items-center gap-2">
+            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Creando...
+          </span>
+        </button>
+        <button
+          type="button"
+          (click)="onCancel()"
+          [disabled]="loading"
+          class="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-300 text-gray-900 font-semibold px-6 py-2.5 rounded-lg transition-colors duration-200"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

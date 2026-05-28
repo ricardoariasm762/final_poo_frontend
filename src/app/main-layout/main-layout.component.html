@@ -1,0 +1,93 @@
+<div class="min-h-screen bg-slate-100 text-slate-900">
+  <div class="flex min-h-screen">
+    <aside class="w-80 shrink-0 border-r border-slate-200 bg-slate-950 text-slate-100">
+      <div class="border-b border-slate-800 px-6 py-5">
+        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Sistema de pedidos</p>
+        <h1 class="mt-2 text-xl font-semibold">Menu lateral</h1>
+        <p class="mt-1 text-sm text-slate-400">Navegacion jerarquica de 3 niveles.</p>
+      </div>
+
+      <div class="px-4 py-4">
+        <div *ngIf="loadingMenu" class="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-300">
+          Cargando menu...
+        </div>
+
+        <div *ngIf="menuError" class="rounded-2xl border border-red-900/60 bg-red-950/40 px-4 py-3 text-sm text-red-200">
+          {{ menuError }}
+        </div>
+
+        <ng-template #menuTemplate let-nodes let-level="level">
+          <ul class="space-y-1" [class.mt-2]="level > 1">
+            <li *ngFor="let node of nodes; trackBy: trackById">
+              <button
+                *ngIf="hasChildren(node); else leafLink"
+                type="button"
+                (click)="toggleNode(node)"
+                class="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left transition-colors"
+                [ngClass]="{
+                  'bg-slate-800 text-white': isExpanded(node),
+                  'text-slate-300 hover:bg-slate-900 hover:text-white': !isExpanded(node),
+                  'pl-3': level === 1,
+                  'pl-6': level === 2,
+                  'pl-9': level >= 3
+                }"
+              >
+                <span class="font-medium">{{ node.nombre }}</span>
+                <span class="text-xs">{{ isExpanded(node) ? '-' : '+' }}</span>
+              </button>
+
+              <ng-template #leafLink>
+                <a
+                  [routerLink]="node.ruta"
+                  routerLinkActive="bg-emerald-500/20 text-emerald-200 border border-emerald-500/30"
+                  class="block rounded-xl px-3 py-2 text-sm transition-colors"
+                  [ngClass]="{
+                    'text-slate-300 hover:bg-slate-900 hover:text-white': !isRouteActive(node),
+                    'pl-3': level === 1,
+                    'pl-6': level === 2,
+                    'pl-9': level >= 3
+                  }"
+                >
+                  {{ node.nombre }}
+                </a>
+              </ng-template>
+
+              <div *ngIf="hasChildren(node) && isExpanded(node)">
+                <ng-container
+                  *ngTemplateOutlet="menuTemplate; context: { $implicit: node.children, level: level + 1 }"
+                />
+              </div>
+            </li>
+          </ul>
+        </ng-template>
+
+        <ng-container *ngIf="!loadingMenu && !menuError">
+          <ng-container *ngTemplateOutlet="menuTemplate; context: { $implicit: menuTree, level: 1 }" />
+        </ng-container>
+      </div>
+    </aside>
+
+    <main class="min-w-0 flex-1">
+      <div class="border-b border-slate-200 bg-white px-8 py-4 shadow-sm">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-slate-500">Aplicacion</p>
+            <h2 class="text-lg font-semibold text-slate-900">Gestion de pedidos</h2>
+          </div>
+
+          <button
+            type="button"
+            (click)="goToLogin()"
+            class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100"
+          >
+            Ir a login
+          </button>
+        </div>
+      </div>
+
+      <div class="p-0">
+        <router-outlet />
+      </div>
+    </main>
+  </div>
+</div>
